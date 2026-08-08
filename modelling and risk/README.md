@@ -460,6 +460,7 @@ Cloud deployment
 
 Author
 
-Aarush TyagiData Science Intern — Zidio Development
+Aarush Tyagi 
+*Data Science Intern — Zidio Development
 
 This project demonstrates practical application of time-series forecasting, machine learning, inventory-risk analytics, and business decisioning in a retail environment.
