@@ -1,0 +1,56 @@
+{
+  "selected_model": "Tuned HistGradientBoosting",
+  "features": [
+    "lag_1",
+    "lag_7",
+    "lag_14",
+    "lag_28",
+    "rolling_mean_7",
+    "rolling_mean_14",
+    "rolling_mean_28",
+    "rolling_std_7",
+    "rolling_std_28",
+    "day_of_week",
+    "day_of_month",
+    "week_of_year",
+    "month",
+    "quarter",
+    "year",
+    "is_weekend",
+    "demand_trend_7",
+    "demand_trend_28",
+    "Inventory Level",
+    "Units Ordered",
+    "Demand Forecast",
+    "Price",
+    "Discount",
+    "Holiday/Promotion",
+    "Competitor Pricing",
+    "Year",
+    "Month",
+    "Stockout_Flag",
+    "Sell_Through_Rate",
+    "Forecast_Error",
+    "Price_Diff_vs_Competitor",
+    "Net_Price"
+  ],
+  "best_params": {
+    "learning_rate": 0.05,
+    "max_iter": 200,
+    "max_leaf_nodes": 31,
+    "l2_regularization": 0.1
+  },
+  "baseline_test_metrics": {
+    "MAE": 120.97245283018869,
+    "RMSE": 155.6659194896752,
+    "WAPE": 88.52808054810711,
+    "sMAPE": 92.81517637986879
+  },
+  "final_test_metrics": {
+    "MAE": 0.5642856362825825,
+    "RMSE": 0.8071793829466021,
+    "WAPE": 0.41294627902674086,
+    "sMAPE": 1.6872204130508852
+  },
+  "improvement_pct": 99.53354203946358
+}
