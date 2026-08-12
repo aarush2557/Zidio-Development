@@ -28,6 +28,7 @@
     "Competitor Pricing",
     "Year",
     "Month",
+    "Day",
     "Stockout_Flag",
     "Sell_Through_Rate",
     "Forecast_Error",
@@ -41,16 +42,16 @@
     "l2_regularization": 0.1
   },
   "baseline_test_metrics": {
-    "MAE": 120.97245283018869,
-    "RMSE": 155.6659194896752,
-    "WAPE": 88.52808054810711,
-    "sMAPE": 92.81517637986879
+    "MAE": 119.5893396226415,
+    "RMSE": 152.94411144733587,
+    "WAPE": 87.60627291839153,
+    "sMAPE": 93.15386355762853
   },
   "final_test_metrics": {
-    "MAE": 0.5642856362825825,
-    "RMSE": 0.8071793829466021,
-    "WAPE": 0.41294627902674086,
-    "sMAPE": 1.6872204130508852
+    "MAE": 0.5574982122827568,
+    "RMSE": 0.7977232740819868,
+    "WAPE": 0.40840045350925036,
+    "sMAPE": 1.7434401597257854
   },
-  "improvement_pct": 99.53354203946358
+  "improvement_pct": 99.53382281895534
 }
