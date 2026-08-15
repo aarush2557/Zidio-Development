@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FORESIGHT — Demand &amp; Inventory Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" onerror="this.remove()">
+<script src="{{ url_for('static', filename='js/vendor/chart.umd.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ============ Nav rail ============ -->
+  <nav class="rail">
+    <div class="rail-brand">
+      <span class="rail-mark">◈</span>
+      <div class="rail-brand-text">
+        <span class="rail-title">FORESIGHT</span>
+        <span class="rail-sub">NorthBay Living</span>
+      </div>
+    </div>
+    <ul class="rail-nav">
+      <li><button class="rail-link is-active" data-tab="overview"><span class="rail-idx">01</span>Overview</button></li>
+      <li><button class="rail-link" data-tab="matrix"><span class="rail-idx">02</span>Decision Matrix</button></li>
+      <li><button class="rail-link" data-tab="sku"><span class="rail-idx">03</span>SKU Detail</button></li>
+      <li><button class="rail-link" data-tab="actions"><span class="rail-idx">04</span>Action Lists</button></li>
+    </ul>
+    <div class="rail-foot">
+      <span class="rail-dot"></span> Live snapshot · latest data date
+    </div>
+  </nav>
+
+  <!-- ============ Main ============ -->
+  <main class="main">
+
+    <!-- ---------- OVERVIEW ---------- -->
+    <section class="view is-active" id="view-overview">
+      <header class="view-head">
+        <div>
+          <h1>Executive Overview</h1>
+          <p class="view-desc">Where capital is locked, where sales are at risk, and how the model is performing against a naive baseline.</p>
+        </div>
+      </header>
+
+      <div class="kpi-grid" id="kpi-grid">
+        <!-- KPI cards injected by JS -->
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Demand by Category</h2>
+          <span class="panel-note">Weekly units sold, last 26 weeks</span>
+        </div>
+        <div class="chart-wrap chart-wrap--tall">
+          <canvas id="chart-category-trend"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- DECISION MATRIX ---------- -->
+    <section class="view" id="view-matrix">
+      <header class="view-head">
+        <div>
+          <h1>Risk Scoring &amp; Decisioning Matrix</h1>
+          <p class="view-desc">Every SKU × Store combination plotted by stockout risk against overstock risk. Bubble size is value at stake.</p>
+        </div>
+        <div class="filter-row">
+          <label class="field">
+            <span>Category</span>
+            <select id="filter-category"><option value="all">All categories</option></select>
+          </label>
+          <label class="field">
+            <span>Risk level</span>
+            <select id="filter-risk">
+              <option value="all">All quadrants</option>
+              <option value="reorder">Reorder Now</option>
+              <option value="markdown">Markdown / Clear</option>
+              <option value="watch">Watch / Volatile</option>
+              <option value="healthy">Healthy</option>
+            </select>
+          </label>
+        </div>
+      </header>
+
+      <div class="panel panel--matrix">
+        <div class="quadrant-legend">
+          <span class="legend-item"><i class="dot dot-reorder"></i>Reorder Now</span>
+          <span class="legend-item"><i class="dot dot-watch"></i>Watch / Volatile</span>
+          <span class="legend-item"><i class="dot dot-healthy"></i>Healthy</span>
+          <span class="legend-item"><i class="dot dot-markdown"></i>Markdown / Clear</span>
+        </div>
+        <div class="chart-wrap chart-wrap--matrix">
+          <canvas id="chart-matrix"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- SKU DETAIL ---------- -->
+    <section class="view" id="view-sku">
+      <header class="view-head">
+        <div>
+          <h1>SKU-Level Forecast &amp; Inventory Detail</h1>
+          <p class="view-desc">Historical demand, seasonal-naive baseline, and the model's forecast with an 80% interval.</p>
+        </div>
+        <div class="filter-row">
+          <label class="field field--wide">
+            <span>SKU</span>
+            <select id="sku-select"></select>
+          </label>
+        </div>
+      </header>
+
+      <div class="sku-cards" id="sku-cards"><!-- injected --></div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Actual vs. Forecast</h2>
+          <span class="panel-note" id="sku-panel-note">—</span>
+        </div>
+        <div class="chart-wrap chart-wrap--tall">
+          <canvas id="chart-sku"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- ACTION LISTS ---------- -->
+    <section class="view" id="view-actions">
+      <header class="view-head">
+        <div>
+          <h1>Actionable Task Lists</h1>
+          <p class="view-desc">Prioritised by financial impact. Export whichever list your team is working today.</p>
+        </div>
+      </header>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Reorder Recommendations</h2>
+          <button class="btn-export" data-export="reorder">Export CSV</button>
+        </div>
+        <div class="table-wrap">
+          <table id="table-reorder">
+            <thead>
+              <tr>
+                <th>SKU</th><th>Category</th><th>Stockout Risk</th>
+                <th>On Hand</th><th>Forecast</th><th>Reorder Point</th>
+                <th>₹ Revenue at Risk</th><th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Markdown / Clearance Recommendations</h2>
+          <button class="btn-export" data-export="markdown">Export CSV</button>
+        </div>
+        <div class="table-wrap">
+          <table id="table-markdown">
+            <thead>
+              <tr>
+                <th>SKU</th><th>Category</th><th>Overstock Risk</th>
+                <th>On Hand</th><th>Forecast</th>
+                <th>₹ Locked Capital</th><th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="loading-veil" id="loading-veil"><div class="spinner"></div></div>
+
+<script>
+  window.__SKU_OPTIONS__ = {{ sku_options | tojson }};
+  window.__CATEGORIES__ = {{ categories | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
